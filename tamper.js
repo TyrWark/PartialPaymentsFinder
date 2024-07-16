@@ -140,25 +140,24 @@ function URLCheck(){
         }
     },750)
 }
-
 //Creates Clickable link to payref for LSPayments charges
 function LinkGenerator(){
     console.log("LSPayCC")
     var numberofrows = 0
     try{
-        numberofrows = document.querySelector("#admin_utilities_payments_view_single > div > div > table > tbody").childElementCount
+        numberofrows = document.querySelector("#admin_utilities_payments_view_single > div > table > tbody > table > tbody").childElementCount
     }catch{
         numberofrows = 1
     }
 
     for (let i =1; i < numberofrows+1; i++){
         //create the queryselector
-        var clink = `#admin_utilities_payments_view_single > div > div > table > tbody > tr:nth-child(${i}) > td:nth-child(4)`
-        var PayID = null
+        let clink = `#admin_utilities_payments_view_single > div > table > tbody > table > tbody > tr:nth-child(${i}) > td:nth-child(4)`
+        let PayID = null
 
         //Get PayID from the table, either at the array level or single entry level
         try{PayID = document.querySelector(clink).innerHTML}
-        catch{PayID = document.querySelector("#admin_utilities_payments_view_single > div > table > tbody > table > tbody > tr:nth-child(2) > td:nth-child(5)").innerHTML}
+        catch{PayID = document.querySelector("#admin_utilities_payments_view_single > div > table > tbody > table > tbody > tr:nth-child(2) > td:nth-child(4)").innerHTML}
 
         //Generate the PaymentLink a ref to insert into the table
         var PaylinkComplete = `\<a href="https://us.merchantos.com/reports/payment/retail/${PayID}"\>`
@@ -170,18 +169,18 @@ function LinkGenerator(){
         if (i != 1){
 
             try{document.querySelector(clink).innerHTML = PaylinkComplete + PayID}
-            catch{document.querySelector("#admin_utilities_payments_view_single > div > table > tbody > table > tbody > tr:nth-child(2) > td:nth-child(5)").innerHTML = PaylinkComplete + PayID}
+            catch{document.querySelector(`#admin_utilities_payments_view_single > div > table > tbody > table > tbody > tr:nth-child(${i}) > td:nth-child(4)`).innerHTML = PaylinkComplete + PayID}
 
         }
         //Insert A Ref in the case of a single entry
         try{document.querySelector(clink).innerHTML = document.querySelector(clink).innerHTML
            }
-        catch(e){document.querySelector("#admin_utilities_payments_view_single > div > table > tbody > table > tbody > tr:nth-child(2) > td:nth-child(5)").innerHTML = PaylinkComplete + PayID
+        catch(e){document.querySelector("#admin_utilities_payments_view_single > div > table > tbody > table > tbody > tr:nth-child(2) > td:nth-child(4)").innerHTML = PaylinkComplete + PayID
                 }
 
 
 
-
+console.log(i)
 
 
 
@@ -238,19 +237,19 @@ function CCChargeGen(){
     console.log("NonLSPayCC")
     var numberofrows = 0
     try{
-        numberofrows = document.querySelector("#admin_utilities_payments_view_single > div > div > table > tbody").childElementCount
+                numberofrows = document.querySelector("#admin_utilities_payments_view_single > div > table > tbody > table > tbody").childElementCount
     }catch{
         numberofrows = 1
     }
 
     for (let i =1; i < numberofrows+1; i++){
         //create the queryselector
-        var clink = `#admin_utilities_payments_view_single > div > div > table > tbody > tr:nth-child(${i}) > td:nth-child(4)`
+        let clink = `#admin_utilities_payments_view_single > div > table > tbody > table > tbody > tr:nth-child(${i}) > td:nth-child(4)`
         var PayID = null
 
         //Get PayID from the table, either at the array level or single entry level
         try{PayID = document.querySelector(clink).innerHTML}
-         catch{PayID = document.querySelector("#admin_utilities_payments_view_single > div > table > tbody > table > tbody > tr:nth-child(2) > td:nth-child(5)").innerHTML}
+        catch{PayID = document.querySelector("#admin_utilities_payments_view_single > div > table > tbody > table > tbody > tr:nth-child(2) > td:nth-child(4)").innerHTML}
 
          //Generate the PaymentLink a ref to insert into the table
          var PaylinkComplete = `\<a href="https://us.merchantos.com/?name=reports.register.views.payment&form_name=view&id=${PayID}&tab=ccard""\>`
@@ -259,17 +258,18 @@ function CCChargeGen(){
 
 
         //If not the first row aka header row, insert the A Ref
+     //If not the first row aka header row, insert the A Ref
         if (i != 1){
 
             try{document.querySelector(clink).innerHTML = PaylinkComplete + PayID}
-            catch{document.querySelector("#admin_utilities_payments_view_single > div > table > tbody > table > tbody > tr:nth-child(2) > td:nth-child(5)").innerHTML = PaylinkComplete + PayID}
+            catch{document.querySelector(`#admin_utilities_payments_view_single > div > table > tbody > table > tbody > tr:nth-child(${i}) > td:nth-child(4)`).innerHTML = PaylinkComplete + PayID}
 
         }
-         //Insert A Ref in the case of a single entry
-         try{document.querySelector(clink).innerHTML = document.querySelector(clink).innerHTML
-            }
-         catch(e){document.querySelector("#admin_utilities_payments_view_single > div > table > tbody > table > tbody > tr:nth-child(2) > td:nth-child(5)").innerHTML = PaylinkComplete + PayID
-                 }
+        //Insert A Ref in the case of a single entry
+        try{document.querySelector(clink).innerHTML = document.querySelector(clink).innerHTML
+           }
+        catch(e){document.querySelector("#admin_utilities_payments_view_single > div > table > tbody > table > tbody > tr:nth-child(2) > td:nth-child(4)").innerHTML = PaylinkComplete + PayID
+                }
 
 
 
@@ -432,7 +432,6 @@ function Main(){
 
 //Start Point
 URLCheck()
-
 
 
 
