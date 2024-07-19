@@ -1,19 +1,7 @@
-// ==UserScript==
-// @name         PartialPaymentsFinderV3
-// @namespace    http://tampermonkey.net/
-// @version      2024-05-14
-// @description  Find all payments on a sale regardless of completion status
-// @author       You
-// @match        https://us.merchantos.com/*
-// @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
-// @grant        none
-// @require https://code.jquery.com/jquery-3.6.0.min.js
-// ==/UserScript==
-
-
 
 /* globals jQuery, $, waitForKeyElements */
 
+const timer = ms => new Promise(res => setTimeout(res, ms))
 
 var PTArray = [[]]
 var PaymentProvider = []
@@ -26,6 +14,7 @@ var final = []
 var Headers = ["Payment Type", "Charge Total", "Archived?", "salePaymentID"]
 var pagematch = ""
 var table
+var numberofrows = 0
 
 
 //Get Sale ID
@@ -143,7 +132,6 @@ function URLCheck(){
 //Creates Clickable link to payref for LSPayments charges
 function LinkGenerator(){
     console.log("LSPayCC")
-    var numberofrows = 0
     try{
         numberofrows = document.querySelector("#admin_utilities_payments_view_single > div > table > tbody > table > tbody").childElementCount
     }catch{
@@ -180,14 +168,15 @@ function LinkGenerator(){
 
 
 
-console.log(i)
+
+
 
 
 
     }
 
 
-
+    ExtraDeets()
 }
 
 //Checks if the Payments Provider is LSPay or 3rd Party Integrated
@@ -235,7 +224,6 @@ function PayProvider(){
 //Creates Clickable link to payref for Non-LSPayments charges
 function CCChargeGen(){
     console.log("NonLSPayCC")
-    var numberofrows = 0
     try{
                 numberofrows = document.querySelector("#admin_utilities_payments_view_single > div > table > tbody > table > tbody").childElementCount
     }catch{
@@ -430,17 +418,26 @@ function Main(){
     },800)
 }
 
+
+async function ExtraDeets(){
+    await timer(1000)
+    for (let i = 1; i < numberofrows+1; i++) {
+    console.log(numberofrows)
+    let row = document.querySelector(`#admin_utilities_payments_view_single > div > table > tbody > table > tbody > tr:nth-child(${i})`);
+     let x = row.insertCell(4);
+    if(i != 1){x.innerHTML = "Test"}else{x.innerHTML = "Archive Link"}
+    let SID = document.querySelector(`#admin_utilities_payments_view_single > div > table > tbody > table > tbody > tr:nth-child(${i}) > td:nth-child(4)`).innerText
+    let ref = `\<a href="https://us.merchantos.com/?name=reports.register.views.payment&form_name=view&id=${SID}&tab=ccard""\>`
+    x.innerHTML = ref + SID
+    if(i === 2){null}else{x.innerHTML = ref + SID}
+    document.querySelector("#admin_utilities_payments_view_single > div > table > tbody > table > tbody > tr:nth-child(1) > td:nth-child(5)").innerHTML = "Archive Link"
+
+
+}
+}
+
+
 //Start Point
 URLCheck()
-
-
-
-
-
-
-
-
-
-
 
 
