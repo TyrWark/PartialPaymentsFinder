@@ -11,7 +11,7 @@ var sid = 0
 var matcharray = []
 var namearray = []
 var final = []
-var Headers = ["Payment Type", "Charge Total", "Archived?", "salePaymentID"]
+var Headers = ["Payment Type", "Charge Total", "Archived", "salePaymentID"]
 var pagematch = ""
 var table
 var numberofrows = 0
@@ -367,7 +367,7 @@ function CreateButton(){
 
         var zNode = document.createElement ('div');
         zNode.innerHTML = '<button id="myButton" type="button">'
-            + 'Fetch Payments!</button>'
+            + 'Fetch Payments</button>'
         ;
         zNode.setAttribute ('id', 'myContainer');
 
